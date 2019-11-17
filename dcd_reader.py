@@ -9,7 +9,7 @@ class dcd_trajectory:
     def __init__(self, dcdfile):
         """Define initial state."""
 
-        # Read the dcd header...
+        # Read the dcd header as a sequence of FORTRAN records
 
         # 1. Should be 4 characters "CORD" + 20 32-bit integers as icntrl array
         hdr_bytes = self.read_next_fortran_record(dcdfile)
