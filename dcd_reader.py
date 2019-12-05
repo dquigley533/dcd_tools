@@ -6,8 +6,10 @@ import numpy as np
 class dcd_trajectory:
     """A class representing a trajectory inside a dcd file."""
 
-    num_atoms = np.int32()
-    dcd_title = str()
+    num_atoms = np.int32()     # Number of atoms in each snapshot
+    num_snapshots = np.int32() # Number of snapshots in DCD
+    dcd_title = str()          # DCD title string
+    has_unit_cell = bool()     # Unit cell information present
 
     def __init__(self, dcdfile):
         """Define initial state."""
@@ -22,6 +24,10 @@ class dcd_trajectory:
         icntrl_bytes = hdr_bytes[4:len(hdr_bytes)]  
         icntrl = np.frombuffer(icntrl_bytes, dtype=np.int32, count=20)
 
+        # set unit cell & number of snapshots
+        self.has_unit_cell = bool(icntrl[10]==1)
+        self.num_snapshots = icntrl[0]
+
         # Record 2 is the dcd title (80 bytes)
         hdr_bytes = self.read_next_fortran_record(dcdfile)
         self.dcd_title = hdr_bytes.decode()
@@ -31,19 +37,17 @@ class dcd_trajectory:
         self.num_atoms = np.frombuffer(hdr_bytes, dtype=np.int32, count=1)[0]
 
         # Report on contents of header
-        print("=============================================================")
-        print("Processed header of :", dcdfile.name)
-        print("=============================================================")
-        print("Number of snapshots reported in dcd file : ", icntrl[0])
-        print("Number of timesteps between snapshots    : ", icntrl[2])
-        print("Total number of snapshots in dcd file    : ", icntrl[3])
-        print("DCD in format for Charmm version number  : ", icntrl[19]/10.0)
-        print("Number of atoms in each snapshot         : ", self.num_atoms)
-        if icntrl[10] == 1:
-            print("Header reports presence of unit cell information")
-        print("DCD Title :", self.dcd_title)
-        
-
+        #print("=============================================================")
+        #print("Processed header of :", dcdfile.name)
+        #print("=============================================================")
+        #print("Number of snapshots reported in dcd file : ", icntrl[0])
+        #print("Number of timesteps between snapshots    : ", icntrl[2])
+        #print("Total number of snapshots in dcd file    : ", icntrl[3])
+        #print("DCD in format for Charmm version number  : ", icntrl[19]/10.0)
+        #print("Number of atoms in each snapshot         : ", self.num_atoms)
+        #if icntrl[10] == 1:
+        #    print("Header reports presence of unit cell information")
+        #print("DCD Title :", self.dcd_title)
 
     def read_next_fortran_record(self, dcdfile):
         """Reads the next fortran record from dcd file"""
@@ -76,3 +80,6 @@ class dcd_trajectory:
 input_file = open("test.dcd", "rb")
 
 my_dcd = dcd_trajectory(input_file)
+
+print(my_dcd.has_unit_cell)
+print(my_dcd.dcd_title)
