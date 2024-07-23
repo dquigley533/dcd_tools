@@ -5,11 +5,11 @@
  linear chain molecules."
 %enddef
 
-/* alkane.i */
+/* vis_module.i */
 /* N.B. Implementing module docstring using the method described 
 at http://swig.org/Doc1.3/Python.html#Python_nn66 stops distutils
 from recognising the module name.... 
-%module(docstrig=DOCSTRING) alkane
+%module(docstrig=DOCSTRING) vis_module
 */
 %module vis_module
 %{
@@ -37,7 +37,11 @@ from recognising the module name....
 %apply(double IN_ARRAY2[ANY][ANY]) {(double cell_matrix[3][3])};
 
 /* Chains */
-%apply(int* DIM1, int* DIM2, double** ARGOUTVIEW_ARRAY2) {(int *nbeads_out,int *d_out, double **rchain_ptr)};
+%apply(int DIM1, int DIM2, int DIM3, double* IN_ARRAY3) {(int nchains, int nbeads, int ndims, double *rchains)};
+
+
+
+
 
 
 /* Docstring information for write_psf */

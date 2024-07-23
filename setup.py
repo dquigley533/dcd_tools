@@ -5,23 +5,25 @@
 
 def configuration():
 
+    import os
+    
     from numpy.distutils.misc_util import Configuration
 
     config = Configuration('dcd_tools', parent_name=None, top_path=None)
 
 
     vis_src = ['dcd_writer/vis_module.f90']
-    vis_inc = ['dcd_write/vis_module.h']
+    vis_inc = ['dcd_writer/vis_module.h']
     
     config.add_library('vis_module', sources=vis_src,
                        extra_f90_compile_args=['-g','-fbounds-check','-fbacktrace']
 #                       extra_f90_compile_args=['-O3']
                       )
 
-    config.add_extension('_dcd_tools',
-        sources      = ['dcd_writer/alkane.i','dcd_reader/dcd_reader.py'],
+    config.add_extension('_vis_module',
+        sources      = ['dcd_writer/vis_module.i','dcd_reader/dcd_reader.py'],
         libraries    = ['vis_module'],
-#        include_dirs = ['./include'],
+        include_dirs = ['./dcd_writer/'] + os.environ['CPATH'].split(':'),
         depends      = ['dcd_writer/vis_module.i'] + vis_inc + vis_src,
     )
 

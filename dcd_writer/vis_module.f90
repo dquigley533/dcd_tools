@@ -270,6 +270,7 @@ module vis
 
     do ichain = 1,nchains
 
+       
        ! Find center of mass and the vector which translates
        ! it back inside the unit cell.
        comchain(:) = 0.0_dp

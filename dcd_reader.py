@@ -118,9 +118,9 @@ class dcd_trajectory:
         return record_bytes
 
 # Test 
-input_file = open("test.dcd", "rb")
+#input_file = open("test.dcd", "rb")
 
-my_dcd = dcd_trajectory(input_file)
+#my_dcd = dcd_trajectory(input_file)
 
-print(my_dcd.has_unit_cell)
-print(my_dcd.dcd_title)
+#print(my_dcd.has_unit_cell)
+#print(my_dcd.dcd_title)
