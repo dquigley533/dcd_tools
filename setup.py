@@ -21,12 +21,12 @@ def configuration():
                       )
 
     config.add_extension('_vis_module',
-        sources      = ['dcd_writer/vis_module.i','dcd_reader/dcd_reader.py'],
+        sources      = ['dcd_writer/vis_module.i'],
         libraries    = ['vis_module'],
         include_dirs = ['./dcd_writer/'] + os.environ['CPATH'].split(':'),
         depends      = ['dcd_writer/vis_module.i'] + vis_inc + vis_src,
     )
-
+    
     config.version = "0.1.1"
 
     return config
