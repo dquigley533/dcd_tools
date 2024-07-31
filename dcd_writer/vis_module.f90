@@ -351,6 +351,11 @@ module vis
     xtlabc(2) = acos(dot_product(unita,unitb))*180.0*invPi
     xtlabc(4) = acos(dot_product(unita,unitc))*180.0*invPi
     xtlabc(5) = acos(dot_product(unitb,unitc))*180.0*invPi
+
+    ! We want the acute angles
+    if (xtlabc(4) > 90.0_dp ) xtlabc(4) = 180.0 - xtlabc(4)
+    if (xtlabc(5) > 90.0_dp ) xtlabc(5) = 180.0 - xtlabc(5)
+
     
     ! Write the information to file, note conversion to single
     ! precision to save on file size.
