@@ -7,4 +7,4 @@ author = 'David Quigley'
 from .vis_module import *
 
 # Import the pure python reading funcitons
-import dcd_reader 
+#import dcd_reader 
