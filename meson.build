@@ -1,4 +1,4 @@
-# meson.build for hs_alkane
+# meson.build for dcd_tools
 # D. Quigley - University of Warwick
 
 project(
@@ -11,7 +11,8 @@ project(
 )
 
 # List of options to pass to fortran compiler
-# add_project_arguments(['-fbacktrace', '-fbounds-check'], language:'fortran') 
+#add_project_arguments(['-fbacktrace', '-fbounds-check, '-ld_classic']) 
+#add_project_arguments(['-ld_classic'], language:'fortran')
 
 # Use swig to generate wrapper code
 swig = find_program('swig')
@@ -19,7 +20,22 @@ swig = find_program('swig')
 # Need Python headers to compile the wrapper code
 pydep = dependency('python3', version : '>=3.0.0')
 
+# We'll link using gcc so need to specify some fortran dependencies
+fc = meson.get_compiler('fortran')
+libgfortran_dep = fc.find_library('gfortran', required: true)
+libquadmath_dep = fc.find_library('quadmath', required: true)
 
+# I have issues on MacOS if the Apple-provided clang compiler is used. 
+cc = meson.get_compiler('c')
+if cc.get_id() != fc.get_id()
+  message('Selected C compiler does not have same ID as Fortran compiler.')
+  message('This can cause problems with linking.')
+  message('Set CC and FC environment variables to compatible compilers before building')
+  error()
+endif
+
+
+# Get a handle to the python installation
 py = import('python').find_installation(pure: false)
 
 # NumPy include directory - needed in all submodules
@@ -41,15 +57,16 @@ wrapper_code = custom_target('wrapper_code',
 	     )
 
 # Source files for fortran library
-alkane_src = ['dcd_writer/vis_module.f90']
+vis_src = ['dcd_writer/vis_module.f90']
 	      
 # Build fortran source and wrapper code into extension module
 py.extension_module(
   '_vis_module',
-  [alkane_src, wrapper_code],
+  [vis_src, wrapper_code],
   install: true,
   include_directories : [incdir, incdir_numpy],
   subdir: 'dcd_tools',
+  dependencies: [libgfortran_dep, libquadmath_dep],
 )
 
 # Finally define and install python sources

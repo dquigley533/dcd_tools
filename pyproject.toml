@@ -10,3 +10,6 @@ dynamic = ["version"]
 dependencies = [
 	     "numpy>=2.0.0",
 ]
+
+[tool.meson-python.args]
+compile = ['-v']
