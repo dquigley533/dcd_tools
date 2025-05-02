@@ -180,7 +180,7 @@ module vis
     ! arrays for header
     integer,dimension(20) :: icntrl
     character(4) :: hdr='CORD'
-    character*80,dimension(32) :: dcdtitle
+    character(len=80),dimension(32) :: dcdtitle
 
     integer(kind=it) :: i,ierr
     character(3)     :: boxstring
