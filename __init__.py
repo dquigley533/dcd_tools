@@ -4,7 +4,7 @@
 author = 'David Quigley'
 
 # Import the wrapped Fortran functions from vis_module
-from .vis_module import *
+from ._vis_module import *
 
 # Import the pure python reading funcitons
 #import dcd_reader 
